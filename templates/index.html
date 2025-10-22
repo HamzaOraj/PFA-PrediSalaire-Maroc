@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PrediSalaire Maroc</title>
+</head>
+<body>
+    <h1>Estimez votre salaire au Maroc</h1>
+
+    Poste: 
+    <select id="poste">
+        <option value="Développeur">Développeur</option>
+        <option value="Data Analyst">Data Analyst</option>
+        <option value="Chef de Projet">Chef de Projet</option>
+        <option value="Marketeur">Marketeur</option>
+        <option value="RH">RH</option>
+    </select><br><br>
+
+    Années d'expérience: 
+    <input type="number" id="experience" value="0"><br><br>
+
+    Ville: 
+    <select id="ville">
+        <option value="Casablanca">Casablanca</option>
+        <option value="Rabat">Rabat</option>
+        <option value="Fès">Fès</option>
+        <option value="Tanger">Tanger</option>
+        <option value="Marrakech">Marrakech</option>
+    </select><br><br>
+
+    Niveau d'études: 
+    <select id="etudes">
+        <option value="Bac+2">Bac+2</option>
+        <option value="Bac+3">Bac+3</option>
+        <option value="Bac+5">Bac+5</option>
+        <option value="Bac+7">Bac+7</option>
+    </select><br><br>
+
+    <button onclick="fairePrediction()">Prédire le salaire !</button>
+
+    <h2>Estimation du salaire : <span id="resultat">...</span> DHS/mois</h2>
+
+    <script>
+        async function fairePrediction() {
+            let data = {
+                'Poste': document.getElementById('poste').value,
+                'Expérience_années': document.getElementById('experience').value,
+                'Ville': document.getElementById('ville').value,
+                'Etudes': document.getElementById('etudes').value
+            };
+
+            let response = await fetch('/predict', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+
+            let result = await response.json();
+            document.getElementById('resultat').innerText = parseFloat(result.prediction).toFixed(2);
+        }
+    </script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; }
+        input, select { padding: 8px; font-size: 16px; }
+        button { padding: 10px 15px; font-size: 16px; cursor: pointer; }
+        h2 { color: #0056b3; }
+    </style>
+</body>
+</html>
