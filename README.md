@@ -1,4 +1,4 @@
-🚀 PFA-PrediSalaire-Maroc
+ PFA-PrediSalaire-Maroc
 
 Projet de Fin d'Année (PFA) 2024-2025 ENSA Fès - 1ère Année Cycle Ingénieur Filière : Ingénierie Digitale et Intelligence Appliquée (IDIA)
 

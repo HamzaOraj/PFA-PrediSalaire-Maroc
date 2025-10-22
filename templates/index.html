@@ -1,46 +1,243 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PrediSalaire Maroc</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            
+            /* --- NOUVEAU FOND D'ÉCRAN THÉMATIQUE --- */
+            background-image: 
+                /* Superposition sombre pour la lisibilité et le contraste */
+                linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                /* Image de fond "corporate" (floue par défaut) */
+                url('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=2070');
+            
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* L'image reste fixe quand on défile */
+            
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #2a3342;
+        }
+
+        .container {
+            /* --- NOUVEL EFFET "VERRE DÉPOLI" --- */
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); /* Support pour Safari */
+            
+            padding: 3rem;
+            border-radius: 20px;
+            /* Ombre plus prononcée pour "flotter" sur l'arrière-plan */
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 550px;
+            margin: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Bordure claire */
+        }
+
+        h1 {
+            color: #1a237e;
+            text-align: center;
+            margin-bottom: 2.5rem;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+            font-size: 1.2rem;
+            pointer-events: none;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3.5rem;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            border: 1px solid #dbe2e9;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            appearance: none;
+        }
+
+        .form-control:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 8px rgba(0,123,255,0.2);
+        }
+
+        select.form-control {
+            cursor: pointer;
+        }
+
+        .predict-button {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            background: linear-gradient(90deg, #0d47a1, #1976d2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .predict-button:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 86, 179, 0.2);
+        }
+
+        .predict-button:disabled {
+            background: #90a4ae;
+            cursor: not-allowed;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #ffffff;
+            animation: spin 1s ease-in-out infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .result-container {
+            margin-top: 2rem;
+            text-align: center;
+            background-color: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease-out;
+        }
+
+        .result-container.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .result-container h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .result-container #resultat {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1a237e;
+        }
+    </style>
 </head>
 <body>
-    <h1>Estimez votre salaire au Maroc</h1>
 
-    Poste: 
-    <select id="poste">
-        <option value="Développeur">Développeur</option>
-        <option value="Data Analyst">Data Analyst</option>
-        <option value="Chef de Projet">Chef de Projet</option>
-        <option value="Marketeur">Marketeur</option>
-        <option value="RH">RH</option>
-    </select><br><br>
+    <div class="container">
+        <h1>Estimez votre salaire au Maroc</h1>
+        
+        <div class="form-group">
+            <i class='bx bxs-briefcase form-icon'></i>
+            <select id="poste" class="form-control">
+                <option value="Développeur">Développeur</option>
+                <option value="Data Analyst">Data Analyst</option>
+                <option value="Chef de Projet">Chef de Projet</option>
+                <option value="Marketeur">Marketeur</option>
+                <option value="RH">RH</option>
+            </select>
+        </div>
 
-    Années d'expérience: 
-    <input type="number" id="experience" value="0"><br><br>
+        <div class="form-group">
+            <i class='bx bxs-bar-chart-alt-2 form-icon'></i>
+            <input type="number" id="experience" value="0" class="form-control" placeholder="Années d'expérience">
+        </div>
 
-    Ville: 
-    <select id="ville">
-        <option value="Casablanca">Casablanca</option>
-        <option value="Rabat">Rabat</option>
-        <option value="Fès">Fès</option>
-        <option value="Tanger">Tanger</option>
-        <option value="Marrakech">Marrakech</option>
-    </select><br><br>
+        <div class="form-group">
+            <i class='bx bxs-map form-icon'></i>
+            <select id="ville" class="form-control">
+                <option value="Casablanca">Casablanca</option>
+                <option value="Rabat">Rabat</option>
+                <option value="Fès">Fès</option>
+                <option value_="">Tanger</option>
+                <option value="Marrakech">Marrakech</option>
+            </select>
+        </div>
 
-    Niveau d'études: 
-    <select id="etudes">
-        <option value="Bac+2">Bac+2</option>
-        <option value="Bac+3">Bac+3</option>
-        <option value="Bac+5">Bac+5</option>
-        <option value="Bac+7">Bac+7</option>
-    </select><br><br>
+        <div class="form-group">
+            <i class='bx bxs-graduation form-icon'></i>
+            <select id="etudes" class="form-control">
+                <option value="Bac+2">Bac+2</option>
+                <option value="Bac+3">Bac+3</option>
+                <option value="Bac+5">Bac+5</option>
+                <option value="Bac+7">Bac+7</option>
+            </select>
+        </div>
 
-    <button onclick="fairePrediction()">Prédire le salaire !</button>
+        <button id="predict-btn" onclick="fairePrediction()" class="predict-button">
+            <span class="spinner"></span>
+            <span class="button-text">Prédire le salaire !</span>
+        </button>
 
-    <h2>Estimation du salaire : <span id="resultat">...</span> DHS/mois</h2>
+        <div id="result-box" class="result-container">
+            <h2>Estimation du salaire :</h2>
+            <span id="resultat">...</span> DHS/mois
+        </div>
+    </div>
 
     <script>
         async function fairePrediction() {
+            const button = document.getElementById('predict-btn');
+            const buttonText = button.querySelector('.button-text');
+            const spinner = button.querySelector('.spinner');
+            const resultBox = document.getElementById('result-box');
+            const resultEl = document.getElementById('resultat');
+
+            button.disabled = true;
+            buttonText.innerText = 'Analyse en cours...';
+            spinner.style.display = 'inline-block';
+            resultBox.classList.remove('show');
+
             let data = {
                 'Poste': document.getElementById('poste').value,
                 'Expérience_années': document.getElementById('experience').value,
@@ -48,21 +245,29 @@
                 'Etudes': document.getElementById('etudes').value
             };
 
-            let response = await fetch('/predict', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(data)
-            });
+            try {
+                let response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+                
+                let result = await response.json();
+                
+                resultEl.innerText = parseFloat(result.prediction).toFixed(2);
+                resultBox.classList.add('show');
 
-            let result = await response.json();
-            document.getElementById('resultat').innerText = parseFloat(result.prediction).toFixed(2);
+            } catch (error) {
+                console.error('Erreur lors de la prédiction:', error);
+                resultEl.innerText = 'Erreur';
+                resultBox.classList.add('show');
+            } finally {
+                button.disabled = false;
+                buttonText.innerText = 'Prédire le salaire !';
+                spinner.style.display = 'none';
+            }
         }
     </script>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 30px; }
-        input, select { padding: 8px; font-size: 16px; }
-        button { padding: 10px 15px; font-size: 16px; cursor: pointer; }
-        h2 { color: #0056b3; }
-    </style>
 </body>
 </html>
+
