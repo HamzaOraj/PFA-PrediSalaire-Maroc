@@ -17,18 +17,12 @@
 
         body {
             font-family: 'Poppins', Arial, sans-serif;
-            
-            /* --- NOUVEAU FOND D'ÉCRAN THÉMATIQUE --- */
             background-image: 
-                /* Superposition sombre pour la lisibilité et le contraste */
                 linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-                /* Image de fond "corporate" (floue par défaut) */
                 url('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=2070');
-            
             background-size: cover;
             background-position: center;
-            background-attachment: fixed; /* L'image reste fixe quand on défile */
-            
+            background-attachment: fixed;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -37,19 +31,16 @@
         }
 
         .container {
-            /* --- NOUVEL EFFET "VERRE DÉPOLI" --- */
             background-color: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px); /* Support pour Safari */
-            
+            -webkit-backdrop-filter: blur(10px);
             padding: 3rem;
             border-radius: 20px;
-            /* Ombre plus prononcée pour "flotter" sur l'arrière-plan */
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
             width: 100%;
             max-width: 550px;
             margin: 1rem;
-            border: 1px solid rgba(255, 255, 255, 0.2); /* Bordure claire */
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         h1 {
@@ -62,6 +53,20 @@
 
         .form-group {
             margin-bottom: 1.5rem;
+        }
+
+        /* --- NOUVEAU : Style pour les étiquettes --- */
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #1a237e; /* Couleur assortie au titre */
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        /* --- NOUVEAU : Wrapper pour l'icône et le champ --- */
+        .input-wrapper {
             position: relative;
         }
 
@@ -73,17 +78,19 @@
             color: #888;
             font-size: 1.2rem;
             pointer-events: none;
+            z-index: 1;
         }
 
         .form-control {
             width: 100%;
-            padding: 1rem 1rem 1rem 3.5rem;
+            padding: 1rem 1rem 1rem 3.5rem; /* Padding pour l'icône */
             font-size: 1rem;
             font-family: 'Poppins', sans-serif;
             border: 1px solid #dbe2e9;
             border-radius: 10px;
             transition: all 0.3s ease;
             appearance: none;
+            background-color: #fff; /* Fond blanc pour les champs */
         }
 
         .form-control:focus {
@@ -99,6 +106,7 @@
         .predict-button {
             width: 100%;
             padding: 1rem;
+            margin-top: 2rem; /* Espace ajouté */
             font-size: 1.1rem;
             font-weight: 600;
             background: linear-gradient(90deg, #0d47a1, #1976d2);
@@ -111,8 +119,6 @@
             justify-content: center;
             align-items: center;
             gap: 10px;
-            position: relative;
-            overflow: hidden;
         }
 
         .predict-button:hover:not(:disabled) {
@@ -178,40 +184,56 @@
         <h1>Estimez votre salaire au Maroc</h1>
         
         <div class="form-group">
-            <i class='bx bxs-briefcase form-icon'></i>
-            <select id="poste" class="form-control">
-                <option value="Développeur">Développeur</option>
-                <option value="Data Analyst">Data Analyst</option>
-                <option value="Chef de Projet">Chef de Projet</option>
-                <option value="Marketeur">Marketeur</option>
-                <option value="RH">RH</option>
-            </select>
+            <!-- NOUVELLE ÉTIQUETTE -->
+            <label for="poste" class="form-label">Poste</label>
+            <div class="input-wrapper">
+                <i class='bx bxs-briefcase form-icon'></i>
+                <select id="poste" class="form-control">
+                    <option value="Développeur">Développeur</option>
+                    <option value="Data Analyst">Data Analyst</option>
+                    <option value="Chef de Projet">Chef de Projet</option>
+                    <option value="Marketeur">Marketeur</option>
+                    <option value="RH">RH</option>
+                </select>
+            </div>
         </div>
 
         <div class="form-group">
-            <i class='bx bxs-bar-chart-alt-2 form-icon'></i>
-            <input type="number" id="experience" value="0" class="form-control" placeholder="Années d'expérience">
+            <!-- NOUVELLE ÉTIQUETTE -->
+            <label for="experience" class="form-label">Années d'expérience</label>
+            <div class="input-wrapper">
+                <i class='bx bxs-bar-chart-alt-2 form-icon'></i>
+                <input type="number" id="experience" value="0" class="form-control" placeholder="ex: 3">
+            </div>
         </div>
 
         <div class="form-group">
-            <i class='bx bxs-map form-icon'></i>
-            <select id="ville" class="form-control">
-                <option value="Casablanca">Casablanca</option>
-                <option value="Rabat">Rabat</option>
-                <option value="Fès">Fès</option>
-                <option value_="">Tanger</option>
-                <option value="Marrakech">Marrakech</option>
-            </select>
+            <!-- NOUVELLE ÉTIQUETTE -->
+            <label for="ville" class="form-label">Ville</label>
+            <div class="input-wrapper">
+                <i class='bx bxs-map form-icon'></i>
+                <select id="ville" class="form-control">
+                    <option value="Casablanca">Casablanca</option>
+                    <option value="Rabat">Rabat</option>
+                    <option value="Fès">Fès</option>
+                    <option value="Tanger">Tanger</option>
+                    <option value="Marrakech">Marrakech</option>
+                </select>
+            </div>
         </div>
 
         <div class="form-group">
-            <i class='bx bxs-graduation form-icon'></i>
-            <select id="etudes" class="form-control">
-                <option value="Bac+2">Bac+2</option>
-                <option value="Bac+3">Bac+3</option>
-                <option value="Bac+5">Bac+5</option>
-                <option value="Bac+7">Bac+7</option>
-            </select>
+            <!-- NOUVELLE ÉTIQUETTE -->
+            <label for="etudes" class="form-label">Niveau d'études</label>
+            <div class="input-wrapper">
+                <i class='bx bxs-graduation form-icon'></i>
+                <select id="etudes" class="form-control">
+                    <option value="Bac+2">Bac+2</option>
+                    <option value="Bac+3">Bac+3</option>
+                    <option value="Bac+5">Bac+5</option>
+                    <option value="Bac+7">Bac+7</option>
+                </select>
+            </div>
         </div>
 
         <button id="predict-btn" onclick="fairePrediction()" class="predict-button">
